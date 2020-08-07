@@ -12,7 +12,7 @@ const options = {
   token: env.TOKEN
 };
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(options.token, {polling: true});
 
 let connection = mysql.createConnection(options).promise();
 
