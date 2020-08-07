@@ -7,7 +7,7 @@ const env = process.env;
 const options = {
   host: env.HOST,
   database: env.DB,
-  user: env.USER,
+  user: env.USERNAME,
   password: env.PASS,
   token: env.TOKEN
 };
@@ -15,7 +15,6 @@ const options = {
 const bot = new TelegramBot(options.token, {polling: true});
 
 let connection = mysql.createConnection(options).promise();
-
 bot.onText(/(.+)/, (msg, match) => {
   connection = mysql.createConnection(options).promise();
   const chatId = msg.chat.id;
