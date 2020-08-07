@@ -1,18 +1,18 @@
 const TelegramBot = require('node-telegram-bot-api');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
-const token = `1269342187:AAGPZKYDXdGswH45W-Gw1M-JJmw1TgtXLio`;
-
 dotenv.config();
-const env = process.env;
 
-const bot = new TelegramBot(token, {polling: true});
-options = {
+const env = process.env;
+const options = {
   host: env.HOST,
   database: env.DB,
   user: env.USER,
-  password: env.PASS
+  password: env.PASS,
+  token: env.TOKEN
 };
+
+const bot = new TelegramBot(token, {polling: true});
 
 let connection = mysql.createConnection(options).promise();
 
@@ -40,5 +40,3 @@ bot.onText(/(.+)/, (msg, match) => {
 connection.on('error', err => {
   console.log(err);
 });
-
-console.log(process.env.DATABASE);
