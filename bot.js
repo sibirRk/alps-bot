@@ -8,11 +8,11 @@ const options = {
   host: env.HOST,
   database: env.DB,
   user: env.USERNAME,
-  password: env.PASS,
-  token: env.TOKEN
+  password: env.PASS
 };
 
-const bot = new TelegramBot(options.token, {polling: true});
+const token = env.TOKEN;
+const bot = new TelegramBot(token, {polling: true});
 
 let connection = mysql.createConnection(options).promise();
 bot.onText(/(.+)/, (msg, match) => {
@@ -20,16 +20,14 @@ bot.onText(/(.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const user = '@' + msg.from.username;
   const text = msg.text;
-  console.log(msg);
 
   connection.query('INSERT INTO queries(user, datetime, query) VALUES(?, NOW(), ?)', [user, text])
       .then((result, fields) => {
         bot.sendMessage(chatId, 'Спасибо! Ваше обращение принято.');
-        console.log(result, fields);
       })
       .catch(error => {
-        console.log(error);
         bot.sendMessage(chatId, 'Ошибка. Попробуйте повторить ваш вопрос позже.');
+        console.log(error);
       })
       .then(() => {
         connection.end();
