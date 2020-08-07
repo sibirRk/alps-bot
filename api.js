@@ -14,10 +14,11 @@ const options = {
 const server = restify.createServer();
 const connection = mysql.createConnection(options).promise();
 
-server.get('/hello/:name', function () {
-  connection.query('SELECT * from queries')
-      .then((result, fields) => {
-        console.log(result);
+server.get('/api', (req, res, next) => {
+  connection.query('SELECT * FROM queries')
+      .then(([rows, fields]) => {
+        res.send(rows);
+        return next()
       })
       .catch(error => {
         console.log(error);
