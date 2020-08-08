@@ -12,20 +12,20 @@ const options = {
 };
 
 const server = restify.createServer();
-const connection = mysql.createConnection(options).promise();
 
 server.get('/api', (req, res, next) => {
-  connection.query('SELECT * FROM queries')
-      .then(([rows, fields]) => {
-        res.send(rows);
-        return next()
-      })
-      .catch(error => {
-        console.log(error);
-      })
-      .then(() => {
-        connection.end();
-      });
+  const connection = mysql.createConnection(options);
+  connection.query('SELECT * FROM queries', (err, results, fields) => {
+    if (err) {
+      console.error(err);
+      next();
+    } else {
+      res.send(results);
+      next();
+    }
+    connection.end();
+    next();
+  })
 });
 
 server.listen(1234, function () {
