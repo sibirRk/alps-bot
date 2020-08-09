@@ -1,6 +1,7 @@
 const restify = require('restify');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
+const corsMiddleware = require('restify-cors-middleware');
 dotenv.config();
 
 const env = process.env;
@@ -11,7 +12,12 @@ const options = {
   password: env.PASS
 };
 
+const cors = corsMiddleware({});
+
 const server = restify.createServer();
+
+server.use(cors.preflight);
+server.use(cors.actual);
 
 server.get('/api', (req, res, next) => {
   const connection = mysql.createConnection(options);

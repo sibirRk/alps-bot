@@ -5,7 +5,8 @@
   "main": "bot.js",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "restify-cors-middleware": "^1.1.1"
   },
   "devDependencies": {
     "node-telegram-bot-api": "^0.50.0",
